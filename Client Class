@@ -1,0 +1,83 @@
+public class client {
+
+
+    //declared variables
+    int projectConnect_number;
+    String client_name;
+    int client_telephoneNumber;
+    String client_emailAddress;
+    String client_physicalAddress;
+
+    //class initialized with parameters which contain specific conditions
+    public client(int projectConnect_number,String client_name, int client_telephoneNumber, String client_emailAddress, String client_physicalAddress) {
+
+        //constructor
+        this.projectConnect_number = projectConnect_number;
+        this.client_name = client_name;
+        this.client_telephoneNumber = client_telephoneNumber;
+        this.client_emailAddress = client_emailAddress;
+        this.client_physicalAddress = client_physicalAddress;
+    }
+
+
+    //Getters and Setters
+    public int getProjectConnect_number() {
+        return projectConnect_number;
+    }
+    public void setProjectConnect_number(int projectConnect_number) {
+        this.projectConnect_number = projectConnect_number;
+    }
+
+
+
+
+    public String getClient_name() {
+        return client_name;
+    }
+    public String setClient_name(String client_name) {
+        this.client_name = client_name;
+        return client_name;
+    }
+
+
+
+
+
+    public int getClient_telephoneNumber() {return client_telephoneNumber;}
+    public int setClient_telephoneNumber(int client_telephoneNumber) {
+        this.client_telephoneNumber = client_telephoneNumber;
+        return client_telephoneNumber;
+    }
+
+
+
+
+
+    public String getClient_emailAddress() {
+        return client_emailAddress;
+    }
+    public String setClient_emailAddress(String client_emailAddress) {
+        this.client_emailAddress = client_emailAddress;
+        return client_emailAddress;
+    }
+
+
+
+
+    public String getClient_physicalAddress() {
+        return client_physicalAddress;
+    }
+    public void setClient_physicalAddress(String client_physicalAddress) {
+        this.client_physicalAddress = client_physicalAddress;
+    }
+
+    //toString which displays output of data captured
+    public String toString() {
+
+        String output = "";
+        output += projectConnect_number + " ," + client_name + " ," +client_telephoneNumber+ " ," +client_emailAddress+ " ," + client_physicalAddress;
+
+        return output;
+    }
+}
+
