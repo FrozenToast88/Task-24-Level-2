@@ -1,0 +1,79 @@
+public class architect {
+
+        //declared variables
+        int projectConnect_number;
+        String architect_name;
+        int architect_telephoneNumber;
+        String architect_emailAddress;
+        String architect_physicalAddress;
+
+        //class initialized with parameters which contain specific conditions
+        public architect (int projectConnect_number ,String architect_name , int architect_telephoneNumber , String architect_emailAddress, String architect_physicalAddress) {
+
+            //constructor
+            this.projectConnect_number = projectConnect_number;
+            this.architect_name = architect_name;
+            this.architect_telephoneNumber = architect_telephoneNumber;
+            this.architect_emailAddress = architect_emailAddress;
+            this.architect_physicalAddress = architect_physicalAddress;
+
+        }
+
+        //Getters and Setters
+        public int getProjectConnect_number() {
+            return projectConnect_number;
+        }
+        public void setProjectConnect_number(int projectConnect_number) {
+            this.projectConnect_number = projectConnect_number;
+        }
+
+
+
+
+        public String getArchitect_name(){
+            return architect_name;
+        }
+        public String setArchitect_name(String architect_name){
+            this.architect_name = architect_name;
+
+            return architect_name;
+        }
+
+
+
+        public int getArchitect_telephoneNumber(){
+            return architect_telephoneNumber;
+        }
+        public int setArchitect_telephoneNumber(int architect_telephoneNumber) {
+            this.architect_telephoneNumber = architect_telephoneNumber;
+            return architect_telephoneNumber;
+        }
+
+
+
+        public String getArchitect_emailAddress(){
+            return architect_emailAddress;
+        }
+        public String setArchitect_emailAddress(String architect_emailAddress){
+            this.architect_emailAddress = architect_emailAddress;
+            return architect_emailAddress;
+        }
+
+
+
+        public String getArchitect_physicalAddress() {
+            return architect_physicalAddress;
+        }
+        public void setArchitect_physicalAddress(String architect_physicalAddress) {
+            this.architect_physicalAddress = architect_physicalAddress;
+        }
+
+        //toString which displays output of data captured
+    public String toString() {
+
+        String output = "";
+        output += projectConnect_number+ " ," +architect_name+ " ," +architect_telephoneNumber+" ," +architect_emailAddress+ " ," +architect_physicalAddress;
+
+        return output;
+    }
+}
