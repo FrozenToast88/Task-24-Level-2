@@ -1,0 +1,73 @@
+import java.time.LocalDate;
+
+public class CompletedProjects {
+
+
+    //declared variables
+    project project;
+    architect architect;
+    contractor contractor;
+    client client;
+    LocalDate currentDate;
+
+    //class initialized with parameters which contain specific conditions
+    public CompletedProjects(project project, architect architect, contractor contractor, client client ,LocalDate currentDate) {
+
+        //constructor
+        this.project = project;
+        this.architect = architect;
+        this.contractor = contractor;
+        this.client = client;
+        this.currentDate = currentDate;
+
+
+
+
+    }
+
+        //Getters and Setters
+        public project getProject() {
+            return project;
+        }
+        public void setProject(project project) {
+            this.project = project;
+        }
+
+
+
+        public architect getArchitect() {return architect;}
+        public void setArchitect(architect architect) {this.architect = architect;}
+
+
+
+        public contractor getContractor() {
+            return contractor;
+        }
+        public void setContractor(contractor contractor) {
+            this.contractor = contractor;
+        }
+
+
+
+        public client getClient() {
+            return client;
+        }
+        public void setClient(client client) {
+            this.client = client;
+        }
+
+
+
+        public LocalDate getCurrentDate() {return currentDate;}
+
+
+        //toString which displays output of data captured
+        public String toString() {
+
+        String output = "";
+
+        output += project + "\n" + architect + "\n" + contractor + "\n" + client + "\n" + currentDate;
+
+        return output;
+    }
+}
