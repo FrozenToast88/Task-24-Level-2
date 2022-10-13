@@ -1,0 +1,1060 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.InputMismatchException;
+import java.time.LocalDate;
+import java.util.*;
+import java.io.*;
+
+public class Poised {
+
+    // option D in main while loop
+    public static void projectOverdue() throws FileNotFoundException {
+
+        //Scanner
+        Scanner input = new Scanner(System.in);
+        // project class variables needed to store string
+        ArrayList<project> projectList = new ArrayList<>();
+        project Assignment;
+        String[] groups;
+
+        //current date
+        LocalDate today = LocalDate.now();
+
+        //read text file data
+        File ProjectReader = new File("Projects.txt");
+        Scanner projectR = new Scanner(ProjectReader);
+
+
+        while (projectR.hasNextLine()) {
+
+            //edit String from text file
+            String lines = projectR.nextLine();
+            groups = lines.split(" ,");
+
+
+            // convert String taken from text file into integer
+            Assignment = new project(Integer.parseInt(groups[0]),groups[1], groups[2], groups[3], Integer.parseInt(groups[4]),
+                    Double.parseDouble(groups[5]), Double.parseDouble(groups[6]), (LocalDate.parse(groups[7])), groups[8]);
+            projectList.add(Assignment);
+            //System.out.println(Assignment);
+
+
+        }
+
+        System.out.println("OverDue Projects :\n");
+        // compare today to project deadlines in projectList
+        for (int x = 0; x < projectList.size(); x++) {
+
+            if (today.isAfter(projectList.get(x).getProject_deadline())) {
+                //display projects overdue
+                System.out.println(projectList.get(x));
+            }
+        }
+
+
+    }
+    // option C in main while loop
+    public static void projectIncomplete() throws FileNotFoundException {
+
+        //project declared variables
+        ArrayList<project> projectList = new ArrayList<>();
+        project Assignment;
+        String[] groups;
+
+
+
+
+        LocalDate today = LocalDate.now();
+
+        //read text file Projects
+        File fReader = new File("Projects.txt");
+        Scanner sc = new Scanner(fReader);
+
+
+        while (sc.hasNextLine()) {
+
+            String lines = sc.nextLine();
+            groups = lines.split(" ,");
+
+            // convert String taken from text file into integer
+            Assignment = new project(Integer.parseInt(groups[0]),groups[1], groups[2], groups[3], Integer.parseInt(groups[4]),
+                    Double.parseDouble(groups[5]), Double.parseDouble(groups[6]), (LocalDate.parse(groups[7])), groups[8]);
+            projectList.add(Assignment);
+
+        }
+
+        System.out.println("Incomplete Projects");
+        // compare if projects in projectList is complete or not
+        for (int i = 0; i < projectList.size(); i++) {
+            if (Objects.equals(projectList.get(i).getProject_Complete(), "No")) {
+                //display all incomplete projects
+                System.out.println(projectList.get(i));
+            }
+        }
+    }
+
+    // Option B in main while loop
+    public static void projectUpdate() throws IOException {
+
+        //scanner
+        Scanner input = new Scanner(System.in);
+
+        //class arraylists
+        ArrayList<project> projectList = new ArrayList<>();
+        ArrayList<architect> architectList = new ArrayList<>();
+        ArrayList<contractor> contractorList = new ArrayList<>();
+        ArrayList<client> clientList = new ArrayList<>();
+
+        //current date
+        LocalDate currentDate = LocalDate.now();
+
+        // declared classes
+        client Customer;
+        project Assignment;
+        contractor Builder;
+        architect Designer;
+        CompletedProjects CompletedProjects;
+
+        //declared arrays to store text file String data and edit
+        String[] groups;
+        String[] clientGroups;
+        String[] architectGroups;
+        String[] contractorGroups;
+
+        //file readers for each text file
+        File fReader = new File("Projects.txt");
+        Scanner sc = new Scanner(fReader);
+
+        File clientReader = new File("client.txt");
+        Scanner clientR = new Scanner(clientReader);
+
+        File architectReader = new File("architect.txt");
+        Scanner architectR = new Scanner(architectReader);
+
+        File contractorReader = new File("contractor.txt");
+        Scanner contractorR = new Scanner(contractorReader);
+
+        // While loops for each text file to be able to call data anywhere in method
+        while (sc.hasNextLine()) {
+
+            //split String from text file
+            String line1 = sc.nextLine();
+            groups = line1.split(" ,");
+
+            // convert String taken from text file into integer
+            Assignment = new project(Integer.parseInt(groups[0]), groups[1], groups[2], groups[3], Integer.parseInt(groups[4]),
+                    Double.parseDouble(groups[5]), Double.parseDouble(groups[6]), (LocalDate.parse(groups[7])), groups[8]);
+            //stored in arraylist
+            projectList.add(Assignment);
+            System.out.println(Assignment);
+
+        }
+
+
+
+        while (architectR.hasNextLine()) {
+
+            //split String from text file
+            String line3 = architectR.nextLine();
+            architectGroups = line3.split(" ,");
+
+            // convert String taken from text file into integer
+            Designer = new architect( Integer.parseInt(architectGroups[0]),architectGroups[1], Integer.parseInt(architectGroups[2]), architectGroups[3], architectGroups[4]);
+            //stored in arraylist
+            architectList.add(Designer);
+
+
+        }
+        System.out.println(architectList);
+
+        while (contractorR.hasNextLine()) {
+            //split String from text file
+            String line3 = contractorR.nextLine();
+            contractorGroups = line3.split(" ,");
+
+            // convert String taken from text file into integer
+            Builder = new contractor(Integer.parseInt(contractorGroups[0]), contractorGroups[1], Integer.parseInt(contractorGroups[2]),contractorGroups[3], contractorGroups[4]);
+            //stored in arraylist
+            contractorList.add(Builder);
+
+
+        }
+
+        while (clientR.hasNextLine()) {
+            //split String from text file
+            String line2 = clientR.nextLine();
+            clientGroups = line2.split(" ,");
+
+            // convert String taken from text file into integer
+            Customer = new client(Integer.parseInt(clientGroups[0]), clientGroups[1], Integer.parseInt(clientGroups[2]), clientGroups[3], clientGroups[4]);
+            //stored in arraylist
+            clientList.add(Customer);
+
+        }
+
+        try{
+
+        //capture project number to compare to projectList and display data requested
+        System.out.println("Enter which project you seek : ");
+        int projectChoice = input.nextInt();
+        for (int x = 0; x < projectList.size(); x++) {
+
+            if (projectList.get(x).getProject_number() == projectChoice) {
+                System.out.println(projectList.get(x));
+
+                //editorsChoice data captured for update or finalise user input
+                System.out.println("What would you like to do?\n 1 - Update Project\n 2 - Finalies Project");
+                int editorsChoice = input.nextInt();
+
+                //capture data for updating a project
+                if (editorsChoice == 1) {
+                    //UpdateChoice data captured for which section of the project to be edited
+                    System.out.println("What would you like to Update?\n 1 - Update Project\n 2 - Update Architect\n 3 - Update Contractor\n 4 - Update Client");
+                    int UpdateChoice = input.nextInt();
+
+                    // UpdateChoice 1 - Update Project
+                    if (UpdateChoice == 1) {
+                        // displays project data in sections to be specific
+                        System.out.println("Section 1 = " + projectList.get(x).getProject_number() + "\nSection 2 = " + projectList.get(x).getProject_name() +
+                                "\nSection 3 = " + projectList.get(x).getBuilding_type() + "\nSection 4 = " + projectList.get(x).getProject_address() + "\nSection 5 = " + projectList.get(x).getERF_number() +
+                                "\nSection 6 = " + projectList.get(x).getProject_feeTotal() + "\nSection 7 = " + projectList.get(x).getProject_totalPaid_amount() + "\nSection 8 = " + projectList.get(x).getProject_deadline());
+
+                        //projectUpdate captures what section to be edited then captures the changed data and writes back to project file
+                        //PrintWriter or FileWriter declared in each section of edit to writing back to text file from arraylist
+                        System.out.println("Which section of this project would you like to update? : ");
+                        int projectUpdate = input.nextInt();
+
+                        //projectUpdate section 1 edit function
+                        if (projectUpdate == 1) {
+                            System.out.println("Enter changes here : ");
+                            int projectChanges = input.nextInt();
+                            projectList.get(x).setProject_number(projectChanges);
+
+                            PrintWriter projectWriter = new PrintWriter("Projects.txt");
+                            for (project project : projectList) {
+                                projectWriter.write(project + "\n");
+                            }
+                            projectWriter.close();
+
+                            PrintWriter architectWriter = new PrintWriter("architect.txt");
+                            for (project project : projectList) {
+                                architectWriter.write(project + "\n");
+                            }
+                            architectWriter.close();
+
+                            PrintWriter contractorWriter = new PrintWriter("contractor.txt");
+                            for (project project : projectList) {
+                                contractorWriter.write(project + "\n");
+                            }
+                            contractorWriter.close();
+
+                            PrintWriter clientWriter = new PrintWriter("client.txt");
+                            for (project project : projectList) {
+                                clientWriter.write(project + "\n");
+                            }
+                            clientWriter.close();
+                        }
+
+
+                        //projectUpdate section 2 edit function
+                        if (projectUpdate == 2) {
+                            System.out.println("Enter changes here : ");
+                            String projectChanges = input.next();
+                            projectList.get(x).setProject_name("" + projectChanges.replace(" ", ""));
+
+                            PrintWriter projectWriter = new PrintWriter("Projects.txt");
+                            for (project project : projectList) {
+                                projectWriter.write(project + "\n");
+                            }
+                            projectWriter.close();
+                        }
+
+
+                        //projectUpdate section 3 edit function
+                        if (projectUpdate == 3) {
+                            System.out.println("Enter changes here : ");
+                            String projectChanges = input.next();
+                            projectList.get(x).setBuilding_type(projectChanges);
+
+                            PrintWriter projectWriter = new PrintWriter("Projects.txt");
+                            for (project project : projectList) {
+                                projectWriter.write(project + "\n");
+                            }
+                            projectWriter.close();
+                        }
+
+
+                        //projectUpdate section 4 edit function
+                        if (projectUpdate == 4) {
+                            System.out.println("Enter changes here : \n Example : 28FreeStreet/Plumstead/CapeTown/7708");
+                            String projectChanges = input.next();
+                            projectList.get(x).setProject_address(projectChanges);
+
+                            PrintWriter projectWriter = new PrintWriter("Projects.txt");
+                            for (project project : projectList) {
+                                projectWriter.write(project + "\n");
+                            }
+                            projectWriter.close();
+                        }
+
+
+                        //projectUpdate section 5 edit function
+                        if (projectUpdate == 5) {
+                            System.out.println("Enter changes here : ");
+                            int projectChanges = input.nextInt();
+                            projectList.get(x).setERF_number(projectChanges);
+
+                            PrintWriter projectWriter = new PrintWriter("Projects.txt");
+                            for (project project : projectList) {
+                                projectWriter.write(project + "\n");
+                            }
+                            projectWriter.close();
+                        }
+
+
+                        //projectUpdate section 6 edit function
+                        if (projectUpdate == 6) {
+                            System.out.println("Enter changes here : ");
+                            int projectChanges = input.nextInt();
+                            projectList.get(x).setProject_feeTotal(projectChanges);
+
+                            PrintWriter projectWriter = new PrintWriter("Projects.txt");
+                            for (project project : projectList) {
+                                projectWriter.write(project + "\n");
+                            }
+                            projectWriter.close();
+                        }
+
+
+                        //projectUpdate section 7 edit function
+                        if (projectUpdate == 7) {
+                            System.out.println("Enter changes here : ");
+                            int projectChanges = input.nextInt();
+                            projectList.get(x).setProject_totalPaid_amount(projectChanges);
+
+                            PrintWriter projectWriter = new PrintWriter("Projects.txt");
+                            for (project project : projectList) {
+                                projectWriter.write(project + "\n");
+                            }
+                            projectWriter.close();
+                        }
+
+
+                        //projectUpdate section 8 edit function
+                        if (projectUpdate == 8) {
+                            System.out.println("Enter changes here  : example 'yyyy-mm-dd' ");
+                            String projectChanges = input.next();
+                            projectList.get(x).setProject_deadline(LocalDate.parse(projectChanges));
+
+                            PrintWriter projectWriter = new PrintWriter("Projects.txt");
+                            for (project project : projectList) {
+                                projectWriter.write(project + "\n");
+                            }
+                            projectWriter.close();
+                        }
+
+                    }
+
+
+                    // UpdateChoice 2 - Update Architect
+                    if (UpdateChoice == 2) {
+                        System.out.println(architectList);
+                        int z;
+                        for (z = 0; z < architectList.size(); z++) {
+                            System.out.println("how");
+                            System.out.println(projectChoice);
+                            System.out.println(architectList.get(z));
+
+                            if (projectChoice == architectList.get(z).getProjectConnect_number()) {
+                                // displays project data in sections to be specific
+                                System.out.println("Section 1 = " + architectList.get(z).getArchitect_name() + "\nSection 2 = " + architectList.get(z).getArchitect_telephoneNumber() +
+                                        "\nSection 3 = " + architectList.get(z).getArchitect_emailAddress() + "\nSection 4 = " + architectList.get(z).getArchitect_physicalAddress());
+                            }
+
+
+                            //projectUpdate captures what section to be edited then captures the changed data and writes back to project file
+                            System.out.println("Which section of this project would you like to update? : ");
+                            int projectUpdate = input.nextInt();
+
+
+                            //projectUpdate section 1 edit function
+                            if (projectUpdate == 1) {
+
+                                System.out.println("Enter changes here : ");
+                                String projectChanges = input.next();
+                                architectList.get(z).setArchitect_name(projectChanges);
+
+
+                                PrintWriter architectWriter = new PrintWriter("architect.txt");
+                                for (architect architect : architectList) {
+                                    architectWriter.write(architect + "\n");
+                                }
+                                architectWriter.close();
+                                break;
+                            }
+
+
+                            //projectUpdate section 2 edit function
+                            if (projectUpdate == 2) {
+
+                                System.out.println("Enter changes here : ");
+                                int projectChanges = input.nextInt();
+                                architectList.get(z).setArchitect_telephoneNumber(projectChanges);
+
+                                PrintWriter architectWriter = new PrintWriter("architect.txt");
+                                for (architect architect : architectList) {
+                                    System.out.println(architect + "\n");
+                                    architectWriter.write(architect + "\n");
+                                }
+                                architectWriter.close();
+                                break;
+                            }
+
+
+                            //projectUpdate section 3 edit function
+                            if (projectUpdate == 3) {
+
+                                System.out.println(architectList.get(z).getArchitect_emailAddress());
+                                System.out.println("Enter changes here : ");
+                                String projectChanges = input.next();
+                                architectList.get(z).setArchitect_emailAddress(projectChanges);
+                                System.out.println(architectList.get(z));
+                                System.out.println(architectList);
+
+                                PrintWriter architectWriter = new PrintWriter("architect.txt");
+
+                                for (architect architect : architectList) {
+
+                                    architectWriter.write(architect + "\n");
+                                }
+                                architectWriter.close();
+                                break;
+                            }
+
+
+                            //projectUpdate section 4 edit function
+                            if (projectUpdate == 4) {
+
+                                System.out.println("Enter changes here : \n Example : 28FreeStreet/Plumstead/CapeTown/7708");
+                                String projectChanges = input.next();
+                                architectList.get(z).setArchitect_physicalAddress(projectChanges);
+
+                                PrintWriter architectWriter = new PrintWriter("architect.txt");
+                                for (architect architect : architectList) {
+                                    architectWriter.write(architect + "\n");
+                                }
+
+                                architectWriter.close();
+                                break;
+                            }
+                        }
+                    }
+
+
+
+
+                    // UpdateChoice 3 - Update Contractor
+                    if (UpdateChoice == 3) {
+                        System.out.println(contractorList);
+                        int q;
+                        for (q = 0; q < contractorList.size(); q++) {
+
+                            if (projectChoice == contractorList.get(q).getProjectConnect_number()) {
+                                // displays project data in sections to be specific
+                                System.out.println("Section 1 = " + contractorList.get(q).getContractor_name() + "\nSection 2 = " + contractorList.get(q).getContractor_telephoneNumber() +
+                                        "\nSection 3 = " + contractorList.get(q).getContractor_emailAddress() + "\nSection 4 = " + contractorList.get(q).getContractor_physicalAddress());
+                            }
+
+                            //projectUpdate captures what section to be edited then captures the changed data and writes back to projects file
+                            System.out.println("Which section of this project would you like to update? : ");
+                            int projectUpdate = input.nextInt();
+
+                            //projectUpdate section 1 edit function
+                            if (projectUpdate == 1) {
+
+                                System.out.println("Enter changes here : ");
+                                String projectChanges = input.next();
+                                contractorList.get(q).setContractor_name(projectChanges);
+
+
+                                PrintWriter contractorWriter = new PrintWriter("contractor.txt");
+                                for (contractor contractor : contractorList) {
+                                    contractorWriter.write(contractor + "\n");
+                                }
+                                contractorWriter.close();
+                                break;
+                            }
+
+
+                            //projectUpdate section 2 edit function
+                            if (projectUpdate == 2) {
+
+                                System.out.println("Enter changes here : ");
+                                int projectChanges = input.nextInt();
+                                contractorList.get(q).setContractor_telephoneNumber(projectChanges);
+
+                                PrintWriter contractorWriter = new PrintWriter("contractor.txt");
+                                for (contractor contractor : contractorList) {
+                                    contractorWriter.write(contractor + "\n");
+                                }
+                                contractorWriter.close();
+                                break;
+                            }
+
+
+                            //projectUpdate section 3 edit function
+                            if (projectUpdate == 3) {
+
+                                System.out.println("Enter changes here : ");
+                                String projectChanges = input.next();
+                                contractorList.get(q).setContractor_emailAddress(projectChanges);
+
+                                PrintWriter contractorWriter = new PrintWriter("contractor.txt");
+                                for (contractor contractor : contractorList) {
+                                    contractorWriter.write(contractor + "\n");
+                                }
+                                contractorWriter.close();
+                                break;
+                            }
+
+
+                            //projectUpdate section 4 edit function
+                            if (projectUpdate == 4) {
+
+                                System.out.println("Enter changes here : \n Example : 28FreeStreet/Plumstead/CapeTown/7708");
+                                String projectChanges = input.next();
+                                contractorList.get(q).setContractor_physicalAddress(projectChanges);
+
+                                PrintWriter contractorWriter = new PrintWriter("contractor.txt");
+                                for (contractor contractor : contractorList) {
+                                    contractorWriter.write(contractor + "\n");
+                                }
+                                contractorWriter.close();
+                                break;
+                            }
+                        }
+                    }
+
+
+                    // UpdateChoice 4 - Update Client
+                    if (UpdateChoice == 4) {
+
+                        int v;
+                        for (v = 0; v < clientList.size(); v++) {
+                            if (projectChoice == clientList.get(v).getProjectConnect_number()) {
+                                // displays project data in sections to be specific
+                                System.out.println("Section 1 = " + clientList.get(v).getClient_name() + "\nSection 2 = " + clientList.get(v).getClient_telephoneNumber() +
+                                        "\nSection 3 = " + clientList.get(v).getClient_emailAddress() + "\nSection 4 = " + clientList.get(v).getClient_physicalAddress());
+                            }
+
+
+                            //projectUpdate captures what section to be edited then captures the changed data and writes back to projects file
+                            System.out.println("Which section of this project would you like to update? : ");
+                            int projectUpdate = input.nextInt();
+
+                            //projectUpdate section 1 edit function
+                            if (projectUpdate == 1) {
+
+                                System.out.println("Enter changes here : ");
+                                String projectChanges = input.next();
+                                clientList.get(v).setClient_name(projectChanges);
+
+
+                                FileWriter clientWriter = new FileWriter("client.txt");
+                                for (client client : clientList) {
+                                    clientWriter.write(client + "\n");
+                                }
+                                clientWriter.close();
+                                break;
+                            }
+
+                            //projectUpdate section 2 edit function
+                            if (projectUpdate == 2) {
+
+                                System.out.println("Enter changes here : ");
+                                int projectChanges = input.nextInt();
+                                clientList.get(v).setClient_telephoneNumber(projectChanges);
+
+                                FileWriter clientWriter = new FileWriter("client.txt");
+                                for (client client : clientList) {
+                                    clientWriter.write(client + "\n");
+                                }
+                                clientWriter.close();
+                                break;
+                            }
+
+                            //projectUpdate section 3 edit function
+                            if (projectUpdate == 3) {
+
+                                System.out.println("Enter changes here : ");
+                                String projectChanges = input.next();
+                                clientList.get(v).setClient_emailAddress(projectChanges);
+
+                                FileWriter clientWriter = new FileWriter("client.txt");
+                                for (client client : clientList) {
+                                    clientWriter.write(client + "\n");
+                                }
+                                clientWriter.close();
+                                break;
+                            }
+
+                            //projectUpdate section 4 edit function
+                            if (projectUpdate == 4) {
+
+                                System.out.println("Enter changes here : \nExample : 28FreeStreet/Plumstead/CapeTown/7708");
+                                String projectChanges = input.next();
+                                clientList.get(v).setClient_physicalAddress(projectChanges);
+
+                                FileWriter clientWriter = new FileWriter("client.txt");
+                                for (client client : clientList) {
+                                    clientWriter.write(client + "\n");
+                                }
+                                clientWriter.close();
+                                break;
+                            }
+
+                        }
+
+                    }
+
+                }
+
+
+                        //capture data for finalise a project
+                        if (editorsChoice == 2) {
+                            //read client text file
+                            while (clientR.hasNextLine()) {
+
+                                String line2 = clientR.nextLine();
+                                clientGroups = line2.split(" ,");
+
+                                // convert String taken from text file into integer
+                                Customer = new client(Integer.parseInt(clientGroups[0]), clientGroups[1], Integer.parseInt(clientGroups[2]), clientGroups[3], clientGroups[4]);
+                                //stored in arraylist
+                                clientList.add(Customer);
+
+                            }
+
+                            System.out.println(clientList);
+
+
+                            if (Objects.equals(projectList.get(x).getProject_Complete(), "No")) {
+
+                                System.out.println("Would you like to finalise this project : ");
+                                String finalisedOption = input.next().toLowerCase();
+
+
+
+                                if(finalisedOption.equals("yes")) {
+
+
+                                    projectList.get(x).setProject_Complete(finalisedOption);
+                                    PrintWriter projectWriter = new PrintWriter("Projects.txt");
+
+                                    for (project project : projectList) {
+                                        projectWriter.write(project + "\n");
+                                        System.out.println(project);
+                                    }
+                                    projectWriter.close();
+                                }
+
+
+                                // current project has or has not fees outstanding
+                                if (projectList.get(x).getProject_totalPaid_amount() < projectList.get(x).getProject_feeTotal()) {
+
+                                    // obtain sum of fees outstanding
+                                    double remainingAmount = projectList.get(x).getProject_feeTotal() - projectList.get(x).getProject_totalPaid_amount();
+
+                                    for (client client : clientList) {
+                                        //invoice for client that has outstanding fees
+                                        if (projectList.get(x).getProject_number() == client.getProjectConnect_number()) {
+
+
+                                            System.out.println("\nInvoice : ");
+                                            //System.out.println(clientList.toString());
+                                            System.out.println("\n Client Name             : " + client.getClient_name() + "\n Client Telephone Number : " + client.getClient_telephoneNumber() + "\n Client Email Address    : " + client.getClient_emailAddress() + "\n Client physical Address : " + client.getClient_physicalAddress() + "\n Amount Client is outstanding : R" + remainingAmount);
+                                        }
+
+
+                                    }
+                                }
+
+                                // send projects that are finalised to completedProject file
+                                else{
+                                    int o;
+                                    int u;
+                                    int i;
+
+                                    //pulling all data connected to current project
+                                    for (o = 0; o < architectList.size(); o++) {
+                                        if (projectList.get(x).getProject_number() == architectList.get(o).getProjectConnect_number()) {
+                                            break;
+                                        }
+                                    }
+                                    for (u = 0; u < contractorList.size(); u++) {
+                                        if (projectList.get(x).getProject_number() == contractorList.get(u).getProjectConnect_number()) {
+                                            break;
+
+                                        }
+                                    }
+                                    for (i = 0; i < clientList.size(); i++) {
+                                        if (projectList.get(x).getProject_number() == clientList.get(i).getProjectConnect_number()) {
+                                            break;
+
+                                        }
+                                    }
+
+                                    //storing all data of current project in CompletedProjects classes and writing it into completedProjects.txt
+                                    CompletedProjects = new CompletedProjects(projectList.get(x),architectList.get(o),contractorList.get(u),clientList.get(i),currentDate);
+                                    System.out.println(CompletedProjects);
+                                    FileWriter completedProjectsWriter = new FileWriter("completedProjects.txt",true);
+                                    BufferedWriter cpWriter = new BufferedWriter(completedProjectsWriter);
+
+                                    cpWriter.newLine();
+                                    cpWriter.append(CompletedProjects.toString());
+                                    cpWriter.close();
+                                    completedProjectsWriter.close();
+
+                                    //remove current project from text files
+                                    //read project text file
+                                    while (sc.hasNextLine()) {
+
+                                        String line1 = sc.nextLine();
+                                        groups = line1.split(" ,");
+                                        //System.out.println(Arrays.toString(groups));
+
+
+                                        // convert String taken from text file into integer
+                                        Assignment = new project(Integer.parseInt(groups[0]), groups[1], groups[2], groups[3], Integer.parseInt(groups[4]), Double.parseDouble(groups[5]),
+                                                Double.parseDouble(groups[6]), (LocalDate.parse(groups[7])), groups[8]);
+                                        //stored in arraylist
+                                        projectList.add(Assignment);
+                                        System.out.println(Assignment);
+
+                                    }
+                                    //remove project from arraylist then write back to text file
+                                    for(int k= 0; k < projectList.size();k++) {
+                                        if (CompletedProjects.getProject() == projectList.get(k)) {
+                                            System.out.println(projectList.get(k));
+                                            projectList.remove(projectList.get(k));
+
+
+                                        }
+                                    }
+                                    PrintWriter projectWriter = new PrintWriter("Projects.txt");
+                                    for (i = 0; i < projectList.size(); i++) {
+                                        projectWriter.write(projectList.get(i) + "\n");
+                                    }
+                                    projectWriter.close();
+
+
+                                    //read architect text file
+                                    while (architectR.hasNextLine()) {
+
+                                        String line3 = architectR.nextLine();
+                                        architectGroups = line3.split(" ,");
+
+                                        // convert String taken from text file into integer
+                                        Designer = new architect( Integer.parseInt(architectGroups[0]),architectGroups[1], Integer.parseInt(architectGroups[2]), architectGroups[3], architectGroups[4]);
+                                        //stored in arraylist
+                                        architectList.add(Designer);
+
+
+                                    }
+                                    //remove architect from arraylist then write back to text file
+                                    for(int k= 0; k < architectList.size();k++) {
+                                        if (CompletedProjects.getArchitect() == architectList.get(k)) {
+                                            System.out.println(architectList.get(k));
+                                            architectList.remove(architectList.get(k));
+
+
+                                        }
+                                    }
+                                    PrintWriter architectWriter = new PrintWriter("architect.txt");
+                                    for (i = 0; i < architectList.size(); i++) {
+                                        architectWriter.write(architectList.get(i) + "\n");
+                                    }
+
+                                    architectWriter.close();
+
+
+
+                                    //read contractor text file
+                                    while (contractorR.hasNextLine()) {
+
+                                        String line3 = contractorR.nextLine();
+                                        contractorGroups = line3.split(" ,");
+
+
+                                        // convert String taken from text file into integer
+                                        Builder = new contractor(Integer.parseInt(contractorGroups[0]), contractorGroups[1], Integer.parseInt(contractorGroups[2]),contractorGroups[3], contractorGroups[4]);
+                                        //stored in arraylist
+                                        contractorList.add(Builder);
+
+
+                                    }
+                                    //remove contractor from arraylist then write back to text file
+                                    for(int k= 0; k < contractorList.size();k++) {
+                                        if (CompletedProjects.getContractor() == contractorList.get(k)) {
+                                            System.out.println(contractorList.get(k));
+                                            contractorList.remove(contractorList.get(k));
+
+
+                                        }
+                                    }
+                                    PrintWriter contractorWriter = new PrintWriter("contractor.txt");
+                                    for (i = 0; i < contractorList.size(); i++) {
+                                        contractorWriter.write(contractorList.get(i) + "\n");
+                                    }
+                                    contractorWriter.close();
+
+
+
+
+                                    //read client text file
+                                    while (clientR.hasNextLine()) {
+
+                                        String line2 = clientR.nextLine();
+                                        clientGroups = line2.split(" ,");
+
+                                        // convert String taken from text file into integer
+                                        Customer = new client(Integer.parseInt(clientGroups[0]), clientGroups[1], Integer.parseInt(clientGroups[2]), clientGroups[3], clientGroups[4]);
+                                        //stored in arraylist
+                                        clientList.add(Customer);
+
+                                    }
+                                    //remove client from arraylist then write back to text file
+                                    for(int k= 0; k < clientList.size();k++) {
+                                        if (CompletedProjects.getClient() == clientList.get(k)) {
+                                            System.out.println(clientList.get(k));
+                                            clientList.remove(clientList.get(k));
+
+                                        }
+                                    }
+
+                                    FileWriter clientWriter = new FileWriter("client.txt");
+                                    for (i = 0; i < clientList.size(); i++) {
+                                        clientWriter.write(clientList.get(i) + "\n");
+                                    }
+                                    clientWriter.close();
+
+                                }
+
+                            }
+
+                        }
+                        }
+
+
+                }
+
+            }
+        //try catch blocks for errors
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (InputMismatchException ex) {
+        System.out.println("Incorrect requested data type");
+        }
+        }
+
+
+        //InputMismatchException (project you seek)
+
+//index out of bounds (loops)
+
+
+
+
+
+
+
+
+    //main loop
+    public static void main(String[] args) throws IOException {
+
+        Scanner input = new Scanner(System.in); //scanner
+
+        //declared classes
+        project Assignment;
+        architect Designer;
+        contractor Builder;
+        client Customer;
+
+
+    try{
+        while (true) {
+
+            //main option user input requested
+            System.out.println("Select Options  :  \nA = Add New Project \nB = Update or Finalise \nC = Projects Incomplete \nD = Over Due Projects \nE = exit");
+            String option = input.next().toLowerCase();
+            System.out.println(option);
+
+            if (option.equals("a")) {
+
+
+                input = new Scanner(System.in); // scanner
+
+                // user input requested
+                System.out.println("Enter project number : ");
+                int questionP1 = input.nextInt();
+
+                System.out.println("Enter project name : ");
+                String questionP2 = input.next().toLowerCase();
+
+
+                System.out.println("What type of building is being designed? exp'house, apartment block or store, ect ");
+                String questionP3 = input.next().toLowerCase();
+
+                System.out.println("Enter project Address : \nExample : 28FreeStreet/Plumstead/CapeTown/7708");
+                String questionP4 = input.next().toLowerCase();
+
+                System.out.println("Enter in the ERF number : ");
+                int questionP5 = input.nextInt();
+
+                System.out.println("Enter total fee being charged for the project : ");
+                double questionP6 = input.nextDouble();
+
+                System.out.println("Enter total amount paid to date : ");
+                double questionP7 = input.nextDouble();
+
+                System.out.println("Enter deadline for the project : Example 'yyyy-mm-dd' ");
+                LocalDate questionP8 = (LocalDate.parse(input.next()));
+
+
+                String questionP9 = "No";
+
+                //captured project user data requested
+                Assignment = new project(questionP1, questionP2, questionP3, questionP4, questionP5, questionP6, questionP7, questionP8, questionP9);
+
+
+
+
+                // Architect User Input
+
+                System.out.println("Enter Architect Name : ");
+                String questionA1 = input.next().toLowerCase();
+
+                System.out.println("Enter Architect Telephone Number : ");
+                int questionA2 = input.nextInt();
+
+                System.out.println("Enter Architect Email Address  : ");
+                String questionA3 = input.next().toLowerCase();
+
+                System.out.println("Enter Architect Physical Address : \n Example : 28FreeStreet/Plumstead/CapeTown/7708");
+                String questionA4 = input.next().toLowerCase();
+
+                //captured Architect user data requested
+                Designer = new architect(questionP1,questionA1 ,questionA2 ,questionA3 ,questionA4);
+
+
+                // Contractor User Input
+                System.out.println("Enter Contractor Name : ");
+                String questionCo1 = input.next().toLowerCase();
+
+                System.out.println("Enter Contractor Telephone Number : ");
+                int questionCo2 = input.nextInt();
+
+                System.out.println("Enter Contractor Email Address  : ");
+                String questionCo3 = input.next().toLowerCase();;
+
+                System.out.println("Enter Architect Physical Address  : \n Example : 28FreeStreet/Plumstead/CapeTown/7708");
+                String questionCo4 = input.next().toLowerCase();;
+
+                //captured Contractor user data requested
+                Builder = new contractor(questionP1,questionCo1 ,questionCo2 ,questionCo3 ,questionCo4);
+
+
+
+                // Client User Input
+                System.out.println("Enter Client Name : ");
+                String questionCl1 = input.next().toLowerCase();
+
+                System.out.println("Enter Client Telephone Number : ");
+                int questionCl2 = input.nextInt();
+
+                System.out.println("Enter Client Email Address  : ");
+                String questionCl3 = input.next().toLowerCase();;
+
+                System.out.println("Enter Client Physical Address  : \n Example : 28FreeStreet/Plumstead/CapeTown/7708");
+                String questionCl4 = input.next();
+
+                //captured Client user data requested
+                Customer = new client(questionP1,questionCl1 ,questionCl2 ,questionCl3 ,questionCl4);
+
+                // If project name is n/a concatenated string will be captured
+                if (questionP2.equals("n/a")){
+                    Assignment = new project(questionP1,Assignment.setProject_name(questionCl1+" "+questionP3), questionP3, questionP4, questionP5, questionP6, questionP7, questionP8, questionP9);
+                }
+                else{
+                    Assignment = new project(questionP1,questionP2, questionP3, questionP4, questionP5, questionP6, questionP7, questionP8, questionP9);
+                }
+
+                // declared filewriters which are used to write data captured to text files
+                FileWriter fWriter = new FileWriter("Projects.txt", true); // https://stackoverflow.com/questions/9961292/write-to-text-file-without-overwriting-in-java
+                BufferedWriter bWriter = new BufferedWriter(fWriter);
+
+                FileWriter arch_fWriter = new FileWriter("architect.txt", true); // https://stackoverflow.com/questions/9961292/write-to-text-file-without-overwriting-in-java
+                BufferedWriter arch_bWriter = new BufferedWriter(arch_fWriter);
+
+                FileWriter cont_fWriter = new FileWriter("contractor.txt", true); // https://stackoverflow.com/questions/9961292/write-to-text-file-without-overwriting-in-java
+                BufferedWriter cont_bWriter = new BufferedWriter(cont_fWriter);
+
+                FileWriter client_fWriter = new FileWriter("client.txt", true); // https://stackoverflow.com/questions/9961292/write-to-text-file-without-overwriting-in-java
+                BufferedWriter client_bWriter = new BufferedWriter(client_fWriter);
+
+
+
+
+                // write all data captured by classes to respective text files
+                //close text files
+                arch_bWriter.append(String.valueOf(Designer));
+                cont_bWriter.append(String.valueOf(Builder));
+                client_bWriter.append(String.valueOf(Customer));
+                bWriter.append(String.valueOf(Assignment));
+                bWriter.newLine();
+                bWriter.close();
+                fWriter.close();
+                arch_bWriter.close();
+                cont_bWriter.close();
+                client_bWriter.close();
+                arch_fWriter.close();
+                cont_fWriter.close();
+                client_fWriter.close();
+
+
+            }
+
+
+            if (option.equals("b")) {
+                //projectUpdate Method
+                projectUpdate();
+
+            }
+            if (option.equals("c")) {
+                //projectIncomplete Method
+                projectIncomplete();
+
+            }
+            if (option.equals("d")) {
+                //projectOverdue
+                projectOverdue();
+
+            }
+                if (option.equals("e")) {
+                    break;
+
+
+                }
+
+            }
+        }
+    //try catch blocks for errors
+    catch (IOException e) {
+        e.printStackTrace();
+    }
+    catch (InputMismatchException ex) {
+        System.out.println("Incorrect requested data type");
+    }
+    }
+    }
